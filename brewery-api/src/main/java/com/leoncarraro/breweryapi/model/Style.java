@@ -1,5 +1,6 @@
 package com.leoncarraro.breweryapi.model;
 
+import com.leoncarraro.breweryapi.dto.StyleRequest;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +23,13 @@ public class Style {
 
     @OneToMany(mappedBy = "style")
     private List<Beer> beers = new ArrayList<>();
+
+    public Style() {
+    }
+
+    public Style(StyleRequest styleRequest) {
+        id = null;
+        name = styleRequest.getName();
+    }
 
 }

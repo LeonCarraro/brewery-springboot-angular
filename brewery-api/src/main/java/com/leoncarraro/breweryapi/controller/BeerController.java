@@ -5,6 +5,9 @@ import com.leoncarraro.breweryapi.dto.BeerRequest;
 import com.leoncarraro.breweryapi.dto.BeerResponse;
 import com.leoncarraro.breweryapi.service.BeerService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -21,11 +24,16 @@ public class BeerController {
     private final BeerService beerService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<BeerResponse>> getAllWithFilter(String sku, String name, String stylesId,
-                                                               BigDecimal minValue, BigDecimal maxValue) {
+    public ResponseEntity<Page<BeerResponse>> getAllWithFilterAndPagination(
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "6") Integer size,
+            String sku, String name, String stylesId, BigDecimal minValue, BigDecimal maxValue) {
 
+        PageRequest pageRequest = PageRequest.of(page, size);
         List<Long> stylesList = URIParamsConverter.getList(stylesId);
-        return ResponseEntity.ok(beerService.getAllWithFilter(sku, name, stylesList, minValue, maxValue));
+
+        return ResponseEntity.ok(beerService.getAllWithFilterAndPagination(
+                pageRequest, sku, name, stylesList, minValue, maxValue));
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{sku}")

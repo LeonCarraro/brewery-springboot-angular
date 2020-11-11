@@ -11,12 +11,13 @@ import com.leoncarraro.breweryapi.repository.StyleRepository;
 import com.leoncarraro.breweryapi.service.exceptions.ObjectAlreadyExistsException;
 import com.leoncarraro.breweryapi.service.exceptions.ObjectNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,11 +27,11 @@ public class BeerService {
     private final StyleRepository styleRepository;
 
     @Transactional(readOnly = true)
-    public List<BeerResponse> getAllWithFilter(String sku, String name, List<Long> stylesList,
+    public Page<BeerResponse> getAllWithFilterAndPagination(PageRequest pageRequest, String sku, String name, List<Long> stylesList,
                                                BigDecimal minValue, BigDecimal maxValue) {
 
-        return beerRepository.getAllWithFilter(sku, name, stylesList, minValue, maxValue)
-                .stream().map(BeerResponse::new).collect(Collectors.toList());
+        return beerRepository.getAllWithFilterAndPagination(pageRequest, sku, name, stylesList, minValue, maxValue)
+                .map(BeerResponse::new);
     }
 
     @Transactional(readOnly = true)

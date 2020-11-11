@@ -2,12 +2,17 @@ package com.leoncarraro.breweryapi.repository.impl;
 
 import com.leoncarraro.breweryapi.model.Beer;
 import com.leoncarraro.breweryapi.repository.BeerRepositoryCustom;
+import org.hibernate.criterion.CriteriaQuery;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -18,45 +23,54 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public List<Beer> getAllWithFilter(String sku, String name, List<Long> styles, BigDecimal minValue,
+    public Page<Beer> getAllWithFilterAndPagination(Pageable pageable, String sku, String name, List<Long> styles, BigDecimal minValue,
                                        BigDecimal maxValue) {
 
-        StringBuilder jpql = new StringBuilder();
+        StringBuilder query = new StringBuilder();
         HashMap<String, Object> queryParameters = new HashMap<>();
 
-        jpql.append("SELECT beer FROM Beer beer ");
-        jpql.append("JOIN FETCH beer.style ");
-        jpql.append("WHERE 0 = 0 ");
+        query.append("SELECT beer FROM Beer beer ");
+        query.append("JOIN FETCH beer.style ");
+        query.append("WHERE 0 = 0 ");
 
         if (StringUtils.hasText(sku)) {
-            jpql.append("AND beer.sku LIKE :sku ");
+            query.append("AND beer.sku LIKE :sku ");
             queryParameters.put("sku", "%" + sku + "%");
         }
 
         if (StringUtils.hasText(name)) {
-            jpql.append("AND beer.name LIKE :name ");
+            query.append("AND beer.name LIKE :name ");
             queryParameters.put("name", "%" + name + "%");
         }
 
         if (styles != null) {
-            jpql.append("AND beer.style.id IN :styles ");
+            query.append("AND beer.style.id IN :styles ");
             queryParameters.put("styles", styles);
         }
 
         if (minValue != null) {
-            jpql.append("AND beer.value >= :minValue ");
+            query.append("AND beer.value >= :minValue ");
             queryParameters.put("minValue", minValue);
         }
 
         if (maxValue != null) {
-            jpql.append("AND beer.value <= :maxValue");
+            query.append("AND beer.value <= :maxValue");
             queryParameters.put("maxValue", maxValue);
         }
 
-        TypedQuery<Beer> query = entityManager.createQuery(jpql.toString(), Beer.class);
-        queryParameters.forEach(query::setParameter);
+        query.append("ORDER BY beer.sku DESC");
 
-        return query.getResultList();
+        TypedQuery<Beer> typedQuery = entityManager.createQuery(query.toString(), Beer.class);
+        queryParameters.forEach(typedQuery::setParameter);
+
+        int totalElements = typedQuery.getResultList().size();
+
+        typedQuery.setFirstResult((int) pageable.getOffset());
+        typedQuery.setMaxResults(pageable.getPageSize());
+
+        List<Beer> result = typedQuery.getResultList();
+
+        return PageableExecutionUtils.getPage(result, pageable, () -> totalElements);
     }
 
 }

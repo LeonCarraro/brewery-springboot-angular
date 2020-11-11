@@ -1,5 +1,6 @@
 package com.leoncarraro.breweryapi.model;
 
+import com.leoncarraro.breweryapi.dto.BeerRequest;
 import com.leoncarraro.breweryapi.model.enums.Flavor;
 import com.leoncarraro.breweryapi.model.enums.Origin;
 import lombok.EqualsAndHashCode;
@@ -37,5 +38,23 @@ public class Beer {
     @ManyToOne
     @JoinColumn(name = "style_id")
     private Style style;
+
+    public Beer() {
+    }
+
+    public Beer(BeerRequest beerRequest, Origin origin, Flavor flavor, Style style) {
+        id = null;
+        sku = beerRequest.getSku();
+        name = beerRequest.getName();
+        description = beerRequest.getDescription();
+        volume = beerRequest.getVolume();
+        value = beerRequest.getValue();
+        alcoholContent = beerRequest.getAlcoholContent();
+        comission = beerRequest.getComission();
+        stockQuantity = beerRequest.getStockQuantity();
+        this.origin = origin;
+        this.flavor = flavor;
+        this.style = style;
+    }
 
 }

@@ -2,7 +2,6 @@ package com.leoncarraro.breweryapi.repository.impl;
 
 import com.leoncarraro.breweryapi.model.Beer;
 import com.leoncarraro.breweryapi.repository.BeerRepositoryCustom;
-import org.hibernate.criterion.CriteriaQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.PageableExecutionUtils;
@@ -12,7 +11,6 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;

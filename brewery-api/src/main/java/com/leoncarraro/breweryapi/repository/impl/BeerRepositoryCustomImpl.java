@@ -54,7 +54,7 @@ public class BeerRepositoryCustomImpl implements BeerRepositoryCustom {
         }
 
         if (maxValue != null) {
-            query.append("AND beer.value <= :maxValue");
+            query.append("AND beer.value <= :maxValue ");
             queryParameters.put("maxValue", maxValue);
         }
 

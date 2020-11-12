@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class StyleController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<StyleResponse> create(@RequestBody StyleRequest styleRequest) {
+    public ResponseEntity<StyleResponse> create(@RequestBody @Valid StyleRequest styleRequest) {
         StyleResponse styleResponse = styleService.create(styleRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

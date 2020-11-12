@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
@@ -42,7 +43,7 @@ public class BeerController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<BeerResponse> create(@RequestBody BeerRequest beerRequest) {
+    public ResponseEntity<BeerResponse> create(@RequestBody @Valid BeerRequest beerRequest) {
         BeerResponse beerResponse = beerService.create(beerRequest);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()

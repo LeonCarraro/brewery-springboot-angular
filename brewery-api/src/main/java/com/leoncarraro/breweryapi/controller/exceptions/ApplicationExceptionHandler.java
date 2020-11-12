@@ -3,14 +3,18 @@ package com.leoncarraro.breweryapi.controller.exceptions;
 import com.leoncarraro.breweryapi.service.exceptions.BadRequestException;
 import com.leoncarraro.breweryapi.service.exceptions.ObjectAlreadyExistsException;
 import com.leoncarraro.breweryapi.service.exceptions.ObjectNotFoundException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ApplicationExceptionHandler {
@@ -61,6 +65,21 @@ public class ApplicationExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 Collections.singletonList(new StandardError.Error(message))
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(value = { MethodArgumentNotValidException.class })
+    public ResponseEntity<StandardError> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+        List<String> errors = e.getBindingResult().getFieldErrors()
+                .stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
+
+        StandardError error = new StandardError(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                errors.stream().map(StandardError.Error::new).collect(Collectors.toList())
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);

@@ -1,5 +1,6 @@
 package com.leoncarraro.breweryapi.dto;
 
+import com.leoncarraro.breweryapi.validation.SKU;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -11,8 +12,8 @@ import java.math.BigDecimal;
 @Setter
 public class BeerRequest {
 
-    @NotBlank(message = "O campo SKU é de preenchimento obrigatorio!")
-    @Length(min = 6, max = 6, message = "O campo SKU deve conter 6 caracteres!")
+    @NotNull(message = "O campo SKU é de preenchimento obrigatorio!")
+    @SKU
     private String sku;
 
     @NotBlank(message = "O campo Nome é de preenchimento obrigatorio!")

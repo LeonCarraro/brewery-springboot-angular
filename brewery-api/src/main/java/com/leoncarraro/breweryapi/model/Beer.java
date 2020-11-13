@@ -57,4 +57,9 @@ public class Beer {
         this.style = style;
     }
 
+    @PrePersist @PreUpdate
+    private void prePersistAndUpdate() {
+        setSku(getSku().toUpperCase());
+    }
+
 }

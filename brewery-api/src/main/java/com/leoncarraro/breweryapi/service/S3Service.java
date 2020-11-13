@@ -8,9 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,18 +25,6 @@ public class S3Service {
 
     public S3Service(AmazonS3 amazonS3) {
         this.amazonS3 = amazonS3;
-    }
-
-    public URI uploadFile(MultipartFile multipartFile) {
-        try {
-            String fileName = multipartFile.getOriginalFilename();
-            String contentType = multipartFile.getContentType();
-            InputStream inputStream = multipartFile.getInputStream();
-
-            return uploadFile(fileName, contentType, inputStream);
-        } catch (IOException e) {
-            throw new FileException("Erro ao instanciar InputStream a partir do MultipartFile: " + e.getMessage());
-        }
     }
 
     public URI uploadFile(String fileName, String contentType, InputStream inputStream) {

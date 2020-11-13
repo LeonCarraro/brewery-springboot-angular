@@ -2,11 +2,12 @@ package com.leoncarraro.breweryapi.service;
 
 import com.leoncarraro.breweryapi.service.exceptions.FileException;
 import org.apache.commons.io.FilenameUtils;
+import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,6 +19,10 @@ public class ImageService {
 
     public BufferedImage getJpgImageFromFile(MultipartFile uploadedFile) {
         String extension = FilenameUtils.getExtension(uploadedFile.getOriginalFilename());
+
+        if (extension == null) {
+            throw new FileException("Erro ao tentar obter a extensão da imagem!");
+        }
         if (!extension.equals("png") && !extension.equals("jpg")) {
             throw new FileException("Somente imagens PNG e JPG são permitidas!");
         }
@@ -40,6 +45,10 @@ public class ImageService {
         jpgImage.createGraphics().drawImage(pngImage, 0, 0, Color.WHITE, null);
 
         return jpgImage;
+    }
+
+    public BufferedImage resize(BufferedImage source, Integer size) {
+        return Scalr.resize(source, Scalr.Method.ULTRA_QUALITY, size);
     }
 
     public InputStream getInputStream(BufferedImage bufferedImage, String extension) {

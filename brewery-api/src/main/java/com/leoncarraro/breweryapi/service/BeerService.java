@@ -71,11 +71,12 @@ public class BeerService {
     }
 
     @Transactional
-    public URI uploadBeerImage(MultipartFile multipartFile, String sku) {
+    public URI uploadImage(MultipartFile multipartFile, String sku) {
         Beer beer = beerRepository.findBySku(sku)
                 .orElseThrow(() -> new ObjectNotFoundException("Cerveja " + sku + " não encontrada!"));
 
         BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        jpgImage = imageService.resize(jpgImage, 200);
         String filename = "B-" + beer.getSku() + ".jpg";
 
         URI uri = s3Service.uploadFile(filename, "image", imageService.getInputStream(jpgImage, "jpg"));

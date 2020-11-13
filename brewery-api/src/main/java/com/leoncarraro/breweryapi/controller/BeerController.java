@@ -55,8 +55,8 @@ public class BeerController {
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST)
-    public ResponseEntity<Void> uploadBeerImage(@RequestParam MultipartFile file, @RequestParam String sku) {
-        URI uri = beerService.uploadBeerImage(file, sku);
+    public ResponseEntity<Void> uploadImage(@RequestParam MultipartFile file, @RequestParam String sku) {
+        URI uri = beerService.uploadImage(file, sku);
         return ResponseEntity.created(uri).build();
     }
 

@@ -28,6 +28,7 @@ public class Beer {
     private BigDecimal alcoholContent;
     private BigDecimal comission;
     private Integer stockQuantity;
+    private String imagePath;
 
     @Enumerated(value = EnumType.STRING)
     private Origin origin;

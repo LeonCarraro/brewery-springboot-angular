@@ -22,6 +22,7 @@ public class BeerResponse {
     private final Integer stockQuantity;
     private final Origin origin;
     private final Flavor flavor;
+    private final String imagePath;
 
     @JsonProperty(value = "style")
     private final StyleResponse styleResponse;
@@ -38,6 +39,7 @@ public class BeerResponse {
         stockQuantity = beer.getStockQuantity();
         origin = beer.getOrigin();
         flavor = beer.getFlavor();
+        imagePath = beer.getImagePath();
         styleResponse = new StyleResponse(beer.getStyle());
     }
 

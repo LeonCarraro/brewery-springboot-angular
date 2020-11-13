@@ -33,20 +33,18 @@ public class S3Service {
         try {
             String fileName = multipartFile.getOriginalFilename();
             String contentType = multipartFile.getContentType();
-            Long size = multipartFile.getSize();
             InputStream inputStream = multipartFile.getInputStream();
 
-            return uploadFile(fileName, contentType, size, inputStream);
+            return uploadFile(fileName, contentType, inputStream);
         } catch (IOException e) {
             throw new FileException("Erro ao instanciar InputStream a partir do MultipartFile: " + e.getMessage());
         }
     }
 
-    public URI uploadFile(String fileName, String contentType, Long size, InputStream inputStream) {
+    public URI uploadFile(String fileName, String contentType, InputStream inputStream) {
         try {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(contentType);
-            objectMetadata.setContentLength(size);
 
             LOG.info("Iniciando upload...");
             amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata));

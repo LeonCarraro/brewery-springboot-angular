@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
@@ -28,6 +29,7 @@ public class BeerService {
     private final BeerRepository beerRepository;
     private final StyleRepository styleRepository;
     private final S3Service s3Service;
+    private final ImageService imageService;
 
     @Transactional(readOnly = true)
     public Page<BeerResponse> getAllWithFilterAndPagination(PageRequest pageRequest, String sku, String name, List<Long> stylesList,
@@ -68,8 +70,20 @@ public class BeerService {
         return new BeerResponse(beer);
     }
 
-    public URI uploadBeerImage(MultipartFile multipartFile) {
-        return s3Service.uploadFile(multipartFile);
+    @Transactional
+    public URI uploadBeerImage(MultipartFile multipartFile, String sku) {
+        Beer beer = beerRepository.findBySku(sku)
+                .orElseThrow(() -> new ObjectNotFoundException("Cerveja " + sku + " não encontrada!"));
+
+        BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+        String filename = "B-" + beer.getSku() + ".jpg";
+
+        URI uri = s3Service.uploadFile(filename, "image", imageService.getInputStream(jpgImage, "jpg"));
+
+        beer.setImagePath(uri.toString());
+        beerRepository.save(beer);
+
+        return uri;
     }
 
 }

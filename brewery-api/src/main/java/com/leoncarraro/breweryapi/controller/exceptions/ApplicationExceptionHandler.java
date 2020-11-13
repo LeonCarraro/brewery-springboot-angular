@@ -1,6 +1,10 @@
 package com.leoncarraro.breweryapi.controller.exceptions;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.leoncarraro.breweryapi.service.exceptions.BadRequestException;
+import com.leoncarraro.breweryapi.service.exceptions.FileException;
 import com.leoncarraro.breweryapi.service.exceptions.ObjectAlreadyExistsException;
 import com.leoncarraro.breweryapi.service.exceptions.ObjectNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -83,6 +87,56 @@ public class ApplicationExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(value = { FileException.class })
+    public ResponseEntity<StandardError> fileExceptionHandler(FileException e) {
+        StandardError error = new StandardError(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                Collections.singletonList(new StandardError.Error(e.getMessage()))
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(value = { AmazonS3Exception.class })
+    public ResponseEntity<StandardError> amazonS3ExceptionHandler(AmazonS3Exception e) {
+        StandardError error = new StandardError(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                Collections.singletonList(new StandardError.Error(e.getMessage()))
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(value = { AmazonClientException.class })
+    public ResponseEntity<StandardError> amazonClientExceptionHandler(AmazonClientException e) {
+        StandardError error = new StandardError(
+                OffsetDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                Collections.singletonList(new StandardError.Error(e.getMessage()))
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(value = { AmazonServiceException.class })
+    public ResponseEntity<StandardError> amazonServiceExceptionHandler(AmazonServiceException e) {
+        HttpStatus errorCode = HttpStatus.valueOf(e.getErrorCode());
+
+        StandardError error = new StandardError(
+                OffsetDateTime.now(),
+                errorCode.value(),
+                errorCode.getReasonPhrase(),
+                Collections.singletonList(new StandardError.Error(e.getMessage()))
+        );
+
+        return ResponseEntity.status(errorCode).body(error);
     }
 
 }

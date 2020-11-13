@@ -3,6 +3,7 @@ package com.leoncarraro.breweryapi.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.leoncarraro.breweryapi.service.exceptions.FileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,18 +33,20 @@ public class S3Service {
         try {
             String fileName = multipartFile.getOriginalFilename();
             String contentType = multipartFile.getContentType();
+            Long size = multipartFile.getSize();
             InputStream inputStream = multipartFile.getInputStream();
 
-            return uploadFile(fileName, contentType, inputStream);
+            return uploadFile(fileName, contentType, size, inputStream);
         } catch (IOException e) {
-            throw new RuntimeException("Erro ao instanciar InputStream: " + e.getMessage());
+            throw new FileException("Erro ao instanciar InputStream a partir do MultipartFile: " + e.getMessage());
         }
     }
 
-    public URI uploadFile(String fileName, String contentType, InputStream inputStream) {
+    public URI uploadFile(String fileName, String contentType, Long size, InputStream inputStream) {
         try {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentType(contentType);
+            objectMetadata.setContentLength(size);
 
             LOG.info("Iniciando upload...");
             amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata));
@@ -51,7 +54,7 @@ public class S3Service {
 
             return amazonS3.getUrl(bucket, fileName).toURI();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Erro ao converter URL para URI: " + e.getMessage());
+            throw new FileException("Erro ao converter URL para URI: " + e.getMessage());
         }
     }
 

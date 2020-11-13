@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -51,6 +52,12 @@ public class BeerController {
                 .toUri();
 
         return ResponseEntity.created(location).body(beerResponse);
+    }
+
+    @RequestMapping(value = "/image", method = RequestMethod.POST)
+    public ResponseEntity<Void> uploadBeerImage(@RequestParam MultipartFile file) {
+        URI uri = beerService.uploadBeerImage(file);
+        return ResponseEntity.created(uri).build();
     }
 
 }

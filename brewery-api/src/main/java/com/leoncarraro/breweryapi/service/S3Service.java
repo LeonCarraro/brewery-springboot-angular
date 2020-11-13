@@ -1,15 +1,18 @@
 package com.leoncarraro.breweryapi.service;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Service
 public class S3Service {
@@ -25,18 +28,30 @@ public class S3Service {
         this.amazonS3 = amazonS3;
     }
 
-    public void uploadFile(String localFilePath) {
+    public URI uploadFile(MultipartFile multipartFile) {
         try {
-            File file = new File(localFilePath);
+            String fileName = multipartFile.getOriginalFilename();
+            String contentType = multipartFile.getContentType();
+            InputStream inputStream = multipartFile.getInputStream();
 
-            LOG.info("Starting upload...");
-            amazonS3.putObject(new PutObjectRequest(bucket, "test-upload.png", file));
-            LOG.info("File uploaded");
-        } catch (AmazonServiceException e) {
-            LOG.info("AmazonServiceException >>> " + e.getErrorMessage());
-            LOG.info("Status code: " + e.getErrorCode());
-        } catch (AmazonClientException e) {
-            LOG.info("AmazonClientException >>> " + e.getMessage());
+            return uploadFile(fileName, contentType, inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao instanciar InputStream: " + e.getMessage());
+        }
+    }
+
+    public URI uploadFile(String fileName, String contentType, InputStream inputStream) {
+        try {
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(contentType);
+
+            LOG.info("Iniciando upload...");
+            amazonS3.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata));
+            LOG.info("Upload finalizado com sucesso.");
+
+            return amazonS3.getUrl(bucket, fileName).toURI();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Erro ao converter URL para URI: " + e.getMessage());
         }
     }
 

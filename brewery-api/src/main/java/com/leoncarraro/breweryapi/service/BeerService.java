@@ -15,8 +15,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.util.List;
 
 @Service
@@ -25,6 +27,7 @@ public class BeerService {
 
     private final BeerRepository beerRepository;
     private final StyleRepository styleRepository;
+    private final S3Service s3Service;
 
     @Transactional(readOnly = true)
     public Page<BeerResponse> getAllWithFilterAndPagination(PageRequest pageRequest, String sku, String name, List<Long> stylesList,
@@ -63,6 +66,10 @@ public class BeerService {
         Beer beer = new Beer(beerRequest, origin, flavor, style);
         beer = beerRepository.save(beer);
         return new BeerResponse(beer);
+    }
+
+    public URI uploadBeerImage(MultipartFile multipartFile) {
+        return s3Service.uploadFile(multipartFile);
     }
 
 }

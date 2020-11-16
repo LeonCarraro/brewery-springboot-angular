@@ -1,17 +1,13 @@
 package com.leoncarraro.breweryapi.dto;
 
-import com.leoncarraro.breweryapi.model.Style;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class StyleResponse {
 
-    private final Long id;
-    private final String name;
-
-    public StyleResponse(Style style) {
-        id = style.getId();
-        name = style.getName();
-    }
+    private Long id;
+    private String name;
 
 }

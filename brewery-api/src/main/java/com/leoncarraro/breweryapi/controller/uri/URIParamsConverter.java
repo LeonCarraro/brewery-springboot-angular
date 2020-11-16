@@ -1,4 +1,4 @@
-package com.leoncarraro.breweryapi.controller.uril;
+package com.leoncarraro.breweryapi.controller.uri;
 
 import com.leoncarraro.breweryapi.service.exceptions.BadRequestException;
 import org.springframework.util.StringUtils;

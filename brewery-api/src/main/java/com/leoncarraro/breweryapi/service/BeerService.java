@@ -2,6 +2,7 @@ package com.leoncarraro.breweryapi.service;
 
 import com.leoncarraro.breweryapi.dto.BeerRequest;
 import com.leoncarraro.breweryapi.dto.BeerResponse;
+import com.leoncarraro.breweryapi.mapper.BeerMapper;
 import com.leoncarraro.breweryapi.model.Beer;
 import com.leoncarraro.breweryapi.model.Style;
 import com.leoncarraro.breweryapi.model.enums.Flavor;
@@ -26,17 +27,20 @@ import java.util.List;
 @AllArgsConstructor
 public class BeerService {
 
+    private final BeerMapper beerMapper = BeerMapper.INSTANCE;
+
     private final BeerRepository beerRepository;
     private final StyleRepository styleRepository;
     private final S3Service s3Service;
     private final ImageService imageService;
 
     @Transactional(readOnly = true)
-    public Page<BeerResponse> getAllWithFilterAndPagination(PageRequest pageRequest, String sku, String name, List<Long> stylesList,
-                                               BigDecimal minValue, BigDecimal maxValue) {
+    public Page<BeerResponse> getAllWithFilterAndPagination(PageRequest pageRequest, String sku, String name,
+                                                            List<Long> stylesList, BigDecimal minValue,
+                                                            BigDecimal maxValue) {
 
         return beerRepository.getAllWithFilterAndPagination(pageRequest, sku, name, stylesList, minValue, maxValue)
-                .map(BeerResponse::new);
+                .map(beerMapper::toResponse);
     }
 
     @Transactional(readOnly = true)
@@ -44,7 +48,7 @@ public class BeerService {
         Beer beer = beerRepository.findBySku(sku)
                 .orElseThrow(() -> new ObjectNotFoundException("Cerveja " + sku + " não encontrada!"));
 
-        return new BeerResponse(beer);
+        return beerMapper.toResponse(beer);
     }
 
     @Transactional
@@ -65,9 +69,9 @@ public class BeerService {
                 .orElseThrow(() -> new ObjectNotFoundException(
                         "Estilo de código " + beerRequest.getStyleId() + " não encontrado!"));
 
-        Beer beer = new Beer(beerRequest, origin, flavor, style);
+        Beer beer = beerMapper.toModel(beerRequest, origin, flavor, style);
         beer = beerRepository.save(beer);
-        return new BeerResponse(beer);
+        return beerMapper.toResponse(beer);
     }
 
     @Transactional

@@ -39,13 +39,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .withClient("Angular")
                 .secret(bCryptPasswordEncoder.encode(clientPassword))
                 .scopes("read", "write")
-                .authorizedGrantTypes("password")
-                .accessTokenValiditySeconds(30);
+                .authorizedGrantTypes("password", "refresh_token")
+                .accessTokenValiditySeconds(30)
+                .refreshTokenValiditySeconds(60);
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.tokenStore(tokenStore)
+        endpoints.reuseRefreshTokens(false)
+                .tokenStore(tokenStore)
                 .accessTokenConverter(jwtAccessTokenConverter)
                 .authenticationManager(authenticationManager);
     }

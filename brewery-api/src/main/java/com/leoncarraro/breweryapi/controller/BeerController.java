@@ -1,6 +1,6 @@
 package com.leoncarraro.breweryapi.controller;
 
-import com.leoncarraro.breweryapi.controller.uri.URIParamsConverter;
+import com.leoncarraro.breweryapi.controller.util.URIParamsConverter;
 import com.leoncarraro.breweryapi.dto.BeerRequest;
 import com.leoncarraro.breweryapi.dto.BeerResponse;
 import com.leoncarraro.breweryapi.service.BeerService;

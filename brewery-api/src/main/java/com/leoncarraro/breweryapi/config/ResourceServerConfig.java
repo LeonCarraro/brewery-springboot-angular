@@ -1,5 +1,6 @@
 package com.leoncarraro.breweryapi.config;
 
+import com.leoncarraro.breweryapi.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,17 +18,17 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public ResourceServerConfig(BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public ResourceServerConfig(BCryptPasswordEncoder bCryptPasswordEncoder, CustomUserDetailsService customUserDetailsService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("admin")
-                .password(bCryptPasswordEncoder.encode("password"))
-                .roles("ADMIN");
+        auth.userDetailsService(customUserDetailsService)
+                .passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override

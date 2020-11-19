@@ -1,4 +1,4 @@
-package com.leoncarraro.breweryapi.util;
+package com.leoncarraro.breweryapi.security.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

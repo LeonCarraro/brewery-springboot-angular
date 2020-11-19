@@ -1,11 +1,13 @@
 package com.leoncarraro.breweryapi.config;
 
+import com.leoncarraro.breweryapi.config.token.CustomTokenEnhancer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
@@ -38,6 +40,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         jwtAccessTokenConverter.setSigningKey(jwtSigningKey);
 
         return jwtAccessTokenConverter;
+    }
+
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new CustomTokenEnhancer();
     }
 
 }

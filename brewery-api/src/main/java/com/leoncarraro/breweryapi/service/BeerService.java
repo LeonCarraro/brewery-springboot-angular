@@ -2,13 +2,14 @@ package com.leoncarraro.breweryapi.service;
 
 import com.leoncarraro.breweryapi.dto.BeerRequest;
 import com.leoncarraro.breweryapi.dto.BeerResponse;
-import com.leoncarraro.breweryapi.mapper.BeerMapper;
+import com.leoncarraro.breweryapi.dto.mapper.BeerMapper;
 import com.leoncarraro.breweryapi.model.Beer;
 import com.leoncarraro.breweryapi.model.Style;
 import com.leoncarraro.breweryapi.model.enums.Flavor;
 import com.leoncarraro.breweryapi.model.enums.Origin;
 import com.leoncarraro.breweryapi.repository.BeerRepository;
 import com.leoncarraro.breweryapi.repository.StyleRepository;
+import com.leoncarraro.breweryapi.service.exceptions.BadRequestException;
 import com.leoncarraro.breweryapi.service.exceptions.ObjectAlreadyExistsException;
 import com.leoncarraro.breweryapi.service.exceptions.ObjectNotFoundException;
 import lombok.AllArgsConstructor;
@@ -58,15 +59,15 @@ public class BeerService {
         }
 
         Origin origin = Origin.getByDescription(beerRequest.getOrigin())
-                .orElseThrow(() -> new ObjectNotFoundException(
+                .orElseThrow(() -> new BadRequestException(
                         "Origem " + beerRequest.getOrigin() + " não encontrada!"));
 
         Flavor flavor = Flavor.getByDescription(beerRequest.getFlavor())
-                .orElseThrow(() -> new ObjectNotFoundException(
+                .orElseThrow(() -> new BadRequestException(
                         "Sabor " + beerRequest.getFlavor() + " não encontrado!"));
 
         Style style = styleRepository.findById(beerRequest.getStyleId())
-                .orElseThrow(() -> new ObjectNotFoundException(
+                .orElseThrow(() -> new BadRequestException(
                         "Estilo de código " + beerRequest.getStyleId() + " não encontrado!"));
 
         Beer beer = beerMapper.toModel(beerRequest, origin, flavor, style);

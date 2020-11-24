@@ -1,4 +1,4 @@
-package com.leoncarraro.breweryapi.mapper;
+package com.leoncarraro.breweryapi.dto.mapper;
 
 import com.leoncarraro.breweryapi.dto.StyleRequest;
 import com.leoncarraro.breweryapi.dto.StyleResponse;

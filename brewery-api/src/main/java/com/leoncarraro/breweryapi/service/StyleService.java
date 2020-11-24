@@ -2,7 +2,7 @@ package com.leoncarraro.breweryapi.service;
 
 import com.leoncarraro.breweryapi.dto.StyleRequest;
 import com.leoncarraro.breweryapi.dto.StyleResponse;
-import com.leoncarraro.breweryapi.mapper.StyleMapper;
+import com.leoncarraro.breweryapi.dto.mapper.StyleMapper;
 import com.leoncarraro.breweryapi.model.Style;
 import com.leoncarraro.breweryapi.repository.StyleRepository;
 import com.leoncarraro.breweryapi.service.exceptions.ObjectAlreadyExistsException;

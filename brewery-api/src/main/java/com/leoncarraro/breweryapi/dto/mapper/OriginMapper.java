@@ -1,4 +1,4 @@
-package com.leoncarraro.breweryapi.mapper;
+package com.leoncarraro.breweryapi.dto.mapper;
 
 import com.leoncarraro.breweryapi.model.enums.Origin;
 

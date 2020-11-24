@@ -1,10 +1,14 @@
 DELETE FROM tb_beer;
 DELETE FROM tb_style;
 DELETE FROM tb_user;
+DELETE FROM tb_city;
+DELETE FROM tb_state;
 
 ALTER TABLE tb_style AUTO_INCREMENT = 1;
 ALTER TABLE tb_beer AUTO_INCREMENT = 1;
 ALTER TABLE tb_user AUTO_INCREMENT = 1;
+ALTER TABLE tb_city AUTO_INCREMENT = 1;
+ALTER TABLE tb_state AUTO_INCREMENT = 1;
 
 INSERT INTO tb_style (id, name)
     VALUES  (null, 'Amber Lager'),
@@ -24,4 +28,22 @@ INSERT INTO tb_beer (id, sku, name, description, volume, value, alcohol_content,
             (null, 'AA0009', 'Cerveja Skol', null, 1000, 12, 5, 12.5, 120, 'NACIONAL', 'SUAVE', 4);
 
 INSERT INTO tb_user (id, name, email, password)
-    VALUES (null, 'Leonardo Oliveira', 'lcarraro.oliveira@brewery.com', '$2a$10$9iWF45eS1NqsvpkUFva.0OplkXk8VEmQJ429Q9ZSFfNo31I4ikhiO')
+    VALUES (null, 'Leonardo Oliveira', 'lcarraro.oliveira@brewery.com', '$2a$10$9iWF45eS1NqsvpkUFva.0OplkXk8VEmQJ429Q9ZSFfNo31I4ikhiO');
+
+INSERT INTO tb_state (id, name)
+    VALUES (null, 'São Paulo'),
+           (null, 'Rio de Janeiro'),
+           (null, 'Bahia'),
+           (null, 'Santa Catarina'),
+           (null, 'Pernambuco');
+
+INSERT INTO tb_city (id, name, state_id)
+    VALUES (null, 'São Paulo', 1),
+           (null, 'Campinas', 1),
+           (null, 'Rio de Janeiro', 2),
+           (null, 'Paraty', 2),
+           (null, 'Cabo Frio', 2),
+           (null, 'Salvador', 3),
+           (null, 'Blumenau', 4),
+           (null, 'Canasvieiras', 4),
+           (null, 'Recife', 5);

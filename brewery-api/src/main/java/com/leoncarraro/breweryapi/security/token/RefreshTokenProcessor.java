@@ -1,5 +1,6 @@
 package com.leoncarraro.breweryapi.security.token;
 
+import com.leoncarraro.breweryapi.config.property.ApplicationProperty;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -18,6 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
 public class RefreshTokenProcessor implements ResponseBodyAdvice<OAuth2AccessToken> {
+
+    private final ApplicationProperty applicationProperty;
+
+    public RefreshTokenProcessor(ApplicationProperty applicationProperty) {
+        this.applicationProperty = applicationProperty;
+    }
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
@@ -53,7 +60,7 @@ public class RefreshTokenProcessor implements ResponseBodyAdvice<OAuth2AccessTok
     private void addRefreshTokenOnCookie(String refreshToken, HttpServletRequest req, HttpServletResponse res) {
         Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
         refreshTokenCookie.setHttpOnly(true);
-        refreshTokenCookie.setSecure(false);  // TODO: 'TRUE' in production!
+        refreshTokenCookie.setSecure(applicationProperty.getApplicationSecurity().isEnableHttps());
         refreshTokenCookie.setPath(req.getContextPath() + "/oauth/token");
         refreshTokenCookie.setMaxAge(604800);
         res.addCookie(refreshTokenCookie);

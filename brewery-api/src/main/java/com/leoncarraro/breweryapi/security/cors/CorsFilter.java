@@ -1,5 +1,6 @@
 package com.leoncarraro.breweryapi.security.cors;
 
+import com.leoncarraro.breweryapi.config.property.ApplicationProperty;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,11 @@ import java.io.IOException;
 @Order(value = Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
 
-    private final String allowedOrigin = "http://localhost:4200";  // TODO: Change in production
+    private final ApplicationProperty applicationProperty;
+
+    public CorsFilter(ApplicationProperty applicationProperty) {
+        this.applicationProperty = applicationProperty;
+    }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse,
@@ -22,10 +27,11 @@ public class CorsFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse res = (HttpServletResponse) servletResponse;
 
-        res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
+        res.setHeader("Access-Control-Allow-Origin", applicationProperty.getApplicationSecurity().getAllowedOrigin());
         res.setHeader("Access-Control-Allow-Credentials", "true");
 
-        if (req.getMethod().equals("OPTIONS") && req.getHeader("Origin").equals(allowedOrigin)) {
+        if (req.getMethod().equals("OPTIONS") &&
+                req.getHeader("Origin").equals(applicationProperty.getApplicationSecurity().getAllowedOrigin())) {
             res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, OPTIONS");
             res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
             res.setHeader("Access-Control-Max-Age", "3600");

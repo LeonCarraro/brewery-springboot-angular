@@ -19,6 +19,8 @@ public interface BeerMapper {
     @Mapping(target = "imagePath", ignore = true)
     @Mapping(source = "beerRequest.name", target = "name")
     @Mapping(source = "beerRequest.description", target = "description")
+    @Mapping(source = "origin", target = "origin")
+    @Mapping(source = "flavor", target = "flavor")
     Beer toModel(BeerRequest beerRequest, Origin origin, Flavor flavor, Style style);
 
     @Mapping(source = "beer.style.id", target = "styleResponse.id")

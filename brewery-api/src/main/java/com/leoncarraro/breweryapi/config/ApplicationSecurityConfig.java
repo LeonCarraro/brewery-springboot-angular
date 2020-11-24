@@ -1,7 +1,7 @@
 package com.leoncarraro.breweryapi.config;
 
+import com.leoncarraro.breweryapi.config.property.ApplicationProperty;
 import com.leoncarraro.breweryapi.config.token.CustomTokenEnhancer;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,8 +15,11 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value(value = "${jwt.signing-key}")
-    private String jwtSigningKey;
+    private final ApplicationProperty applicationProperty;
+
+    public ApplicationSecurityConfig(ApplicationProperty applicationProperty) {
+        this.applicationProperty = applicationProperty;
+    }
 
     @Bean
     @Override
@@ -37,7 +40,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey(jwtSigningKey);
+        jwtAccessTokenConverter.setSigningKey(applicationProperty.getApplicationSecurity().getJwtSigningKey());
 
         return jwtAccessTokenConverter;
     }

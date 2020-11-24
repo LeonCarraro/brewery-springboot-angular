@@ -1,6 +1,6 @@
 package com.leoncarraro.breweryapi.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.leoncarraro.breweryapi.config.property.ApplicationProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,8 +19,7 @@ import java.util.Arrays;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Value(value = "${oauth2.client.password}")
-    private String clientPassword;
+    private final ApplicationProperty applicationProperty;
 
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -31,24 +30,28 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public AuthorizationServerConfig(AuthenticationManager authenticationManager,
                                      BCryptPasswordEncoder bCryptPasswordEncoder,
                                      TokenStore tokenStore, JwtAccessTokenConverter jwtAccessTokenConverter,
-                                     TokenEnhancer tokenEnhancer) {
+                                     TokenEnhancer tokenEnhancer, ApplicationProperty applicationProperty) {
 
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.tokenStore = tokenStore;
         this.jwtAccessTokenConverter = jwtAccessTokenConverter;
         this.tokenEnhancer = tokenEnhancer;
+        this.applicationProperty = applicationProperty;
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 .withClient("Angular")
-                .secret(bCryptPasswordEncoder.encode(clientPassword))
+                .secret(bCryptPasswordEncoder.encode(
+                        applicationProperty.getApplicationSecurity().getOauthClientPassword()))
                 .scopes("read", "write")
                 .authorizedGrantTypes("password", "refresh_token")
-                .accessTokenValiditySeconds(30)  // TODO: Change in production!
-                .refreshTokenValiditySeconds(60);  // TODO: Change in production!
+                .accessTokenValiditySeconds(applicationProperty.getApplicationSecurity()
+                        .getAccessTokenValiditySeconds())
+                .refreshTokenValiditySeconds(applicationProperty.getApplicationSecurity()
+                        .getRefreshTokenValiditySeconds());
     }
 
     @Override

@@ -1,6 +1,7 @@
 DELETE FROM tb_beer;
 DELETE FROM tb_style;
 DELETE FROM tb_user;
+DELETE FROM tb_client;
 DELETE FROM tb_city;
 DELETE FROM tb_state;
 
@@ -9,6 +10,7 @@ ALTER TABLE tb_beer AUTO_INCREMENT = 1;
 ALTER TABLE tb_user AUTO_INCREMENT = 1;
 ALTER TABLE tb_city AUTO_INCREMENT = 1;
 ALTER TABLE tb_state AUTO_INCREMENT = 1;
+ALTER TABLE tb_client AUTO_INCREMENT = 1;
 
 INSERT INTO tb_style (id, name)
     VALUES  (null, 'Amber Lager'),
@@ -47,3 +49,8 @@ INSERT INTO tb_city (id, name, state_id)
            (null, 'Blumenau', 4),
            (null, 'Canasvieiras', 4),
            (null, 'Recife', 5);
+
+INSERT INTO tb_client (id, name, client_type, document, phone_number, email, cep, number, complement, city_id)
+    VALUES (null, 'Andreia Valentina Benedita de Paula', 'FISICA', '25558642882', '19991029285', 'andreia_valentina@gmail.com', '13060638', '239', null, 2),
+           (null, 'Nicole Lavínia Cavalcanti', 'FISICA', '74657507761', null, 'nicole_lavinia@gmail.com', '23970970', '745', 'Apto 220', 4),
+           (null, 'Levi Roberto Alves', 'JURIDICA', '04341255000179', '47988789410', 'levi_alves@gmail.com', '89060278', '360', null, 7);

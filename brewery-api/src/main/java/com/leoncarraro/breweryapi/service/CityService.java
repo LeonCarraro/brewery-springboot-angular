@@ -50,7 +50,7 @@ public class CityService {
 
         State state = stateRepository.findById(cityRequest.getStateId())
                 .orElseThrow(() -> new BadRequestException(
-                        "Cidade de código " + cityRequest.getStateId() + " não encontrada!"));
+                        "Estado de código " + cityRequest.getStateId() + " não encontrado!"));
 
         City city = cityMapper.toModel(cityRequest, state);
         city = cityRepository.save(city);

@@ -1,5 +1,7 @@
 package com.leoncarraro.breweryapi.model.enums;
 
+import com.leoncarraro.breweryapi.model.validation.group.CNPJGroup;
+import com.leoncarraro.breweryapi.model.validation.group.CPFGroup;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
 
@@ -11,13 +13,15 @@ import java.util.stream.Collectors;
 @Getter
 public enum ClientType {
 
-    FISICA("Pessoa Física"),
-    JURIDICA("Pessoa Jurídica");
+    FISICA("Pessoa Física", CPFGroup.class),
+    JURIDICA("Pessoa Jurídica", CNPJGroup.class);
 
     private final String description;
+    private final Class<?> group;
 
-    ClientType(String description) {
+    ClientType(String description, Class<?> group) {
         this.description = description;
+        this.group = group;
     }
 
     public static List<String> getAll() {
@@ -29,7 +33,7 @@ public enum ClientType {
 
         if (StringUtils.hasText(description)) {
             for (ClientType type : ClientType.values()) {
-                if (type.getDescription().equalsIgnoreCase(description)) {
+                if (type.getDescription().equals(description)) {
                     clientTypeFound = type;
                 }
             }

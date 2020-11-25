@@ -1,6 +1,6 @@
 package com.leoncarraro.breweryapi.dto;
 
-import com.leoncarraro.breweryapi.validation.SKU;
+import com.leoncarraro.breweryapi.model.validation.SKU;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;

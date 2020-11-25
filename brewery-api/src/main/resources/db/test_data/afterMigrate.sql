@@ -1,3 +1,5 @@
+# noinspection SqlWithoutWhereForFile
+
 DELETE FROM tb_beer;
 DELETE FROM tb_style;
 DELETE FROM tb_user;

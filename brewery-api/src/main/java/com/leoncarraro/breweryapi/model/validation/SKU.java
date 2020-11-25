@@ -1,4 +1,4 @@
-package com.leoncarraro.breweryapi.validation;
+package com.leoncarraro.breweryapi.model.validation;
 
 import javax.validation.Constraint;
 import javax.validation.OverridesAttribute;

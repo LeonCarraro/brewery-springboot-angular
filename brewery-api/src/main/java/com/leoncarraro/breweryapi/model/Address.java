@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+@SuppressWarnings("JpaDataSourceORMInspection")
 @Embeddable
 @Getter
 @Setter

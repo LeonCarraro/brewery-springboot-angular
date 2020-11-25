@@ -18,6 +18,8 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Enumerated(value = EnumType.STRING)
     private ClientType clientType;
     private String document;
     private String phoneNumber;

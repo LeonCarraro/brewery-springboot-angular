@@ -51,17 +51,7 @@
 }
 
 .sidebar ul li ul {
-  display: none;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.sidebar ul li:hover > ul,
-.sidebar ul li ul:hover {
-  display: block;
-  opacity: 1;
   padding: 0;
-  visibility: visible;
 }
 
 .sidebar ul li ul li {

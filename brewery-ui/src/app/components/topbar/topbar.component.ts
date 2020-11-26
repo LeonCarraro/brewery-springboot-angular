@@ -14,8 +14,4 @@ export class TopbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  showMenu() {
-    this.openMenu = !this.openMenu;
-  }
-
 }

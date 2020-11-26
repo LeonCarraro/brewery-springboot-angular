@@ -16,7 +16,6 @@ export class TopbarComponent implements OnInit {
 
   showMenu() {
     this.openMenu = !this.openMenu;
-    console.log(this.openMenu);
   }
 
 }

@@ -1,5 +1,5 @@
 <div class="topbar">
-  <div class="p-d-flex p-jc-between">
+  <div class="p-d-flex p-jc-between p-flex-wrap-reverse">
     <div class="p-d-flex p-ai-center">
       <a class="topbar-logo" href="#">
         <img src="assets/images/brewery-logo.png" alt="Brewery">
@@ -17,3 +17,5 @@
     </div>
   </div>
 </div>
+
+<app-sidebar [hidden]="!openMenu"></app-sidebar>

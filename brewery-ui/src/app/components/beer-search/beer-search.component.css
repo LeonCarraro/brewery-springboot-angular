@@ -1,3 +1,7 @@
-.add-button {
+.center {
+  text-align: center;
+}
 
+.vertical-align {
+  margin-top: 8px;
 }

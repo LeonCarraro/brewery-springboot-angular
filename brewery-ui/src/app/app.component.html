@@ -1,2 +1,5 @@
 <app-topbar></app-topbar>
-<app-beer-search></app-beer-search>
+
+<div class="container" [@canApplyLeftMargin]="resizeScreen && minimumScreenWidth">
+  <app-beer-search></app-beer-search>
+</div>

@@ -7,7 +7,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BeerSearchComponent implements OnInit {
 
-  constructor() { }
+  styles: any[];
+  flavors: any[];
+
+  constructor() {
+    this.styles = [
+      {name: 'Amber Lager'},
+      {name: 'Dark Lager'},
+      {name: 'Pale Lager'},
+      {name: 'Pilsner'},
+    ];
+
+    this.flavors = [
+      {name: 'Adocicada'},
+      {name: 'Amarga'},
+      {name: 'Forte'},
+      {name: 'Doce'},
+      {name: 'Frutada'},
+    ];
+  }
 
   ngOnInit(): void {
   }

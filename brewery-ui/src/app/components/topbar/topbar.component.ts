@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-topbar',
@@ -10,7 +11,9 @@ export class TopbarComponent implements OnInit {
   screenWidth: number;
   openMenu = false;
 
-  constructor() { }
+  constructor(
+    private appComponent: AppComponent
+  ) { }
 
   ngOnInit(): void {
     this.getScreenWidth();
@@ -21,8 +24,23 @@ export class TopbarComponent implements OnInit {
     this.getScreenWidth();
   }
 
+  onOpenMenu() {
+    this.openMenu = !this.openMenu;
+    this.appComponent.resizeScreen = this.openMenu;
+  }
+
+
   getScreenWidth() {
     this.screenWidth = window.innerWidth;
+    if (this.screenWidth >= 980) {
+      this.appComponent.minimumScreenWidth = true;
+    } else {
+      if (this.appComponent.minimumScreenWidth === true) {
+        this.openMenu = false;
+        this.appComponent.resizeScreen = false;
+        this.appComponent.minimumScreenWidth = false;
+      }
+    }
   }
 
 }

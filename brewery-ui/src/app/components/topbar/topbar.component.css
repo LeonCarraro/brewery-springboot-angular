@@ -22,6 +22,12 @@ a {
 
 .topbar .topbar-menu .pi-bars {
   font-size: 20px;
+  transition: all 0.2s ease-out;
+}
+
+.topbar .topbar-menu .pi-bars:hover {
+  transform: scale(1.2);
+  transition: all 0.2s ease-in-out;
 }
 
 .topbar .username {
@@ -35,4 +41,10 @@ a {
 
 .topbar .logout .pi-sign-out {
   font-size: 20px;
+  transition: all 0.2s ease-out;
+}
+
+.topbar .logout .pi-sign-out:hover {
+  transform: scale(1.2);
+  transition: all 0.2s ease-in-out;
 }

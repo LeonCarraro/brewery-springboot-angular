@@ -4,7 +4,7 @@
       <a class="topbar-logo" href="#">
         <img src="assets/images/brewery-logo.png" alt="Brewery">
       </a>
-      <a class="topbar-menu" href="#" (click)="openMenu = !openMenu">
+      <a class="topbar-menu" href="#" (click)="onOpenMenu()">
         <i class="pi pi-bars"></i>
       </a>
     </div>
@@ -18,5 +18,4 @@
   </div>
 </div>
 
-<app-sidebar [hidden]="!openMenu"></app-sidebar>
-
+<app-sidebar [openMenu]="openMenu"></app-sidebar>

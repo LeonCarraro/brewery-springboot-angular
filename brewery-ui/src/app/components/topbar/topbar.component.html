@@ -10,7 +10,7 @@
     </div>
 
     <div class="p-d-flex p-ai-center">
-      <span class="username">Leonardo C.</span>
+      <span class="username" *ngIf="screenWidth >= 375">Leonardo C.</span>
       <a class="logout" href="#">
         <i class="pi pi-sign-out"></i>
       </a>
@@ -19,3 +19,4 @@
 </div>
 
 <app-sidebar [hidden]="!openMenu"></app-sidebar>
+

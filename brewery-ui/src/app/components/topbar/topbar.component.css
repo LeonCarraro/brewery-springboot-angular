@@ -7,16 +7,13 @@ a {
   background-image: -webkit-gradient(linear, left top, right top, from(#2C3E50), to(#4CA1AF));
   border-bottom: 1px solid transparent;
   color: #FFFFFF;
-  left: 0;
   padding: 12px 15px;
-  position: fixed;
-  top: 0;
   width: 100%;
   z-index: 999;
 }
 
 .topbar .topbar-logo {
-  margin-right: 20px;
+  margin-right: 40px;
 }
 
 .topbar .topbar-logo img {

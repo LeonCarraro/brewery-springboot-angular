@@ -8,6 +8,8 @@ a {
   border-bottom: 1px solid transparent;
   color: #FFFFFF;
   padding: 12px 15px;
+  position: fixed;
+  top: 0;
   width: 100%;
   z-index: 999;
 }

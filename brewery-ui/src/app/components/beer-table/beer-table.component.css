@@ -1,0 +1,19 @@
+.table-container {
+  margin-top: 18px;
+}
+
+.header-sku {
+  width: 15%;
+}
+
+.header-origin {
+  width: 20%;
+}
+
+@media (min-width: 641px) {
+  .header-price {
+    text-align: right !important;
+    width: 15%;
+  }
+}
+

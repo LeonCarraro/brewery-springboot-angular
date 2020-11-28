@@ -26,7 +26,7 @@ label {
 }
 
 .container {
-  margin: 20px 20px;
+  margin: 115px 20px 0 20px;
 }
 
 .p-button {
@@ -37,4 +37,43 @@ label {
 .p-button:enabled:hover {
   background-color: #2C646E;
   border-color: #2C646E;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  background-color: transparent;
+}
+
+@media (max-width: 640px) {
+  .p-datatable .p-datatable-tbody > tr {
+    border: 1px solid #4CA1AF33;
+    border-width: 0 0 1px 0;
+  }
+}
+
+.p-datatable .p-datatable-tbody > tr > td,
+.p-datatable .p-datatable-thead > tr > th {
+  background-color: transparent;
+  border: 1px solid #4CA1AF33;
+  border-width: 0 0 1px 0;
+}
+
+.p-datatable.p-datatable-responsive .p-datatable-tbody>tr>td .p-column-title {
+  min-width: 35% !important;
+}
+
+.p-paginator {
+  padding: 1rem 0 0.25rem 0;
+}
+
+.p-datatable .p-paginator-bottom {
+  border: none;
+}
+
+.p-card .p-card-body {
+  padding: 0.5rem 1rem;
+}
+
+.p-card .p-card-content {
+  padding-top: 0;
+  padding-bottom: 0;
 }

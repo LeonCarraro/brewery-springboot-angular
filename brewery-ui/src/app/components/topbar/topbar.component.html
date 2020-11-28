@@ -4,7 +4,7 @@
       <a class="topbar-logo" href="#">
         <img src="assets/images/brewery-logo.png" alt="Brewery">
       </a>
-      <a class="topbar-menu" href="#" (click)="onOpenMenu()">
+      <a class="topbar-menu" href="#" (click)="onOpenMenu()" *ngIf="screenWidth < 980">
         <i class="pi pi-bars"></i>
       </a>
     </div>

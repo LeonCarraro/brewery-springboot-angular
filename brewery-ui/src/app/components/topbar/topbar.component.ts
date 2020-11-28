@@ -29,10 +29,11 @@ export class TopbarComponent implements OnInit {
     this.appComponent.resizeScreen = this.openMenu;
   }
 
-
   getScreenWidth() {
     this.screenWidth = window.innerWidth;
     if (this.screenWidth >= 980) {
+      this.openMenu = true;
+      this.appComponent.resizeScreen = true;
       this.appComponent.minimumScreenWidth = true;
     } else {
       if (this.appComponent.minimumScreenWidth === true) {

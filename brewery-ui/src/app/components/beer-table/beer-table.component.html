@@ -1,0 +1,24 @@
+<div class="table-container">
+  <p-card>
+    <p-table [value]="beers" [responsive]="true"
+             [paginator]="true" [rows]="5" [showPageLinks]="false" [showCurrentPageReport]="true">
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="header-sku">SKU</th>
+          <th>Nome</th>
+          <th class="header-origin">Origem</th>
+          <th class="header-price">Preço</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-beer>
+        <tr>
+          <td><span class="p-column-title">SKU</span>{{ beer.sku }}</td>
+          <td><span class="p-column-title">Nome</span>{{ beer.name }}</td>
+          <td><span class="p-column-title">Origem</span>{{ beer.origin }}</td>
+          <td class="header-price"><span class="p-column-title">Preço</span>{{ beer.price | currency:'BRL' }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
+</div>
